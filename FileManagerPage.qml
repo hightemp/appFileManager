@@ -121,6 +121,12 @@ Component {
 
                 property variant columnWidths: fnCalcColumnWidths(model, list)
 
+                FontMetrics {
+                    id: fileManagerPageFontMetrics
+
+                    font.pixelSize: 10
+                }
+
                 highlightFollowsCurrentItem: true
                 highlight: Rectangle {
                     opacity: 0.5
@@ -171,12 +177,6 @@ Component {
                     height: 20+fileManagerPageFontMetrics.height
 
                     opacity: isHidden ? 0.5 : 1;
-
-                    FontMetrics {
-                        id: fileManagerPageFontMetrics
-
-                        font.pixelSize: 10
-                    }
 
                     RowLayout {
                         id: row
