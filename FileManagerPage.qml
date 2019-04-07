@@ -183,67 +183,57 @@ Component {
                         width: parent.width
                         spacing: 0
 
-                        //Item {
-                        //    Layout.fillWidth: true
+                        Image {
+                            id: icon
+                            source: isDir ? "qrc:/images/folder.svg" : "qrc:/images/none.svg"
+                            width: 20+fileManagerPageFontMetrics.height
+                            height: 20+fileManagerPageFontMetrics.height
 
-                            Image {
-                                id: icon
-                                source: isDir ? "qrc:/images/folder.svg" : "qrc:/images/none.svg"
-                                width: 20+fileManagerPageFontMetrics.height
-                                height: 20+fileManagerPageFontMetrics.height
-                                anchors {
-                                    //left: parent.left
-                                }
+                            anchors {
+                            }
+                        }
+
+                        Label {
+                            //Layout.fillWidth: true
+                            //Layout.minimumWidth: parent.width
+                            //       - fileManagerPageListView.columnWidths['fileSize'] - 20
+                            //       - fileManagerPageListView.columnWidths['fileUpdateTime'] - 20
+
+                            padding: 10
+
+                            anchors {
                             }
 
-                            Label {
-                                Layout.fillWidth: true
+                            font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
 
-                                padding: 10
+                            renderType: Text.NativeRendering
+                            font.bold: isExecutable
+                            text: fileName
+                        }
 
-                                anchors {
-                                    //top: parent.top
-                                    //left: icon.right
-                                    //bottom: parent.bottom
-                                    //right: parent.right
-                                }
+                        Label {
+                            Layout.fillWidth: true
+                        }
 
-                                font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
-                                //anchors.centerIn: parent
+                        Label {
+                            //width: fileManagerPageListView.columnWidths['fileSize'] + 20
 
-                                renderType: Text.NativeRendering
-                                font.bold: isExecutable
-                                text: fileName
-                            }
-                        //}
+                            padding: 10
 
-                        //Item {
-                        //    Layout.fillWidth: true
-                        //    Layout.minimumWidth: 100
+                            font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
 
-                            Label {
-                                //Layout.fillWidth: true
-                                width: columnWidths['fileSize'] + 20
+                            text: fileSize
+                        }
 
-                                padding: 10
+                        Label {
+                            //width: fileManagerPageListView.columnWidths['fileUpdateTime'] + 20
 
-                                text: fileSize
-                            }
-                        //}
+                            padding: 10
 
-                        //Item {
-                        //    Layout.fillWidth: true
-                        //    Layout.minimumWidth: 100
+                            font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
 
-                            Label {
-                                //Layout.fillWidth: true
-                                width: columnWidths['fileUpdateTime'] + 20
-
-                                padding: 10
-
-                                text: fileUpdateTime
-                            }
-                        //}
+                            text: fileUpdateTime
+                        }
                     }
 
                     MouseArea {
