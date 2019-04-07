@@ -369,8 +369,18 @@ Component {
             text: "Delete item?"
 
             onYes: {
-                oFilesListModel.fnRemove(fileManagerPageListView.currentIndex);
+                if (!oFilesListModel.fnRemove(fileManagerPageListView.currentIndex)) {
+                    fileManagerPageErrorDialog.text = "Can't delete file"
+                    fileManagerPageErrorDialog.open();
+                }
             }
+        }
+
+        MessageDialog {
+            id: fileManagerPageErrorDialog
+            title: qsTr("Error")
+            standardButtons: Dialog.Ok
+            text: ""
         }
     }
 
