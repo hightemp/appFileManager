@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>FileManagerPage.qml</file>
+        <file>images/folder.svg</file>
+        <file>images/none.svg</file>
+        <file>images/edit-delete.svg</file>
+        <file>images/folder-new.svg</file>
+        <file>images/go-up.svg</file>
+        <file>images/view-refresh.svg</file>
+    </qresource>
+</RCC>
