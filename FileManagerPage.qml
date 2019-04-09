@@ -25,7 +25,7 @@ Component {
                 height: fileManagerPagePathTextField.height
 
                 Layout.fillWidth: true
-                text: oFilesListModel.fnGetCurrentPath()
+                text: oFilesListModel ? oFilesListModel.fnGetCurrentPath() : ''
 
                 wrapMode: Label.WordWrap
 
@@ -118,52 +118,20 @@ Component {
                 model: oFilesListFilterProxyModel
                 focus: true
 
-                property variant columnWidths: fnCalcColumnWidths(model, list)
-
                 FontMetrics {
                     id: fileManagerPageFontMetrics
 
                     font.pixelSize: 10
                 }
 
-                highlightFollowsCurrentItem: true
+                highlightFollowsCurrentItem: false
                 highlight: Rectangle {
                     opacity: 0.5
                     color: "skyblue"
                     width: ListView.view ? ListView.view.width : 0
-                    height: 20+fileManagerPageFontMetrics.height
+                    height: ListView.view.currentItem.height //20+fileManagerPageFontMetrics.height
                     y: ListView.view && ListView.view.currentItem ? ListView.view.currentItem.y : 0
                     //z: Infinity
-                }
-
-                function fnCalcColumnWidths(model, parent)
-                {
-                    for (var i = 0; i < model.count; ++i) {
-                        var data = model.get(i)
-                        for (var key in data) {
-                            if (!columns[key]) {
-                                columns[key] = 0
-                            }
-
-                            var textElement = Qt.createQmlObject(
-                                'import Qt 4.7;\n'+
-                                'Text { text: "' + data[key] + '"}',
-                                parent,
-                                "calcColumnWidths"
-                            );
-
-                            columns[key] = Math.max(textElement.width, columns[key])
-
-                            textElement.destroy()
-                        }
-                    }
-
-                    return columns
-                }
-
-                function fnUpdateColumnsWidth()
-                {
-                    columnWidths = fnCalcColumnWidths(model, list);
                 }
 
                 delegate: Item {
@@ -173,7 +141,7 @@ Component {
                     property bool isCurrent: ListView.isCurrentItem
 
                     width: view.width
-                    height: 20+fileManagerPageFontMetrics.height
+                    height: 20+fileManagerPageFileNameLabel.height//+fileManagerPageFontMetrics.height
 
                     opacity: isHidden ? 0.5 : 1;
 
@@ -193,12 +161,17 @@ Component {
                         }
 
                         Label {
-                            //Layout.fillWidth: true
-                            //Layout.minimumWidth: parent.width
-                            //       - fileManagerPageListView.columnWidths['fileSize'] - 20
-                            //       - fileManagerPageListView.columnWidths['fileUpdateTime'] - 20
+                            Layout.maximumWidth: 10
+                            Layout.minimumWidth: 10
+                        }
 
-                            padding: 10
+                        Label {
+                            id: fileManagerPageFileNameLabel
+
+                            Layout.fillWidth: true
+                            //Layout.maximumWidth: parent.width - 400
+
+                            //padding: 10
 
                             anchors {
                             }
@@ -208,6 +181,7 @@ Component {
                             renderType: Text.NativeRendering
                             font.bold: isExecutable
                             text: fileName
+                            wrapMode: "WrapAnywhere"
                         }
 
                         Label {
@@ -215,8 +189,7 @@ Component {
                         }
 
                         Label {
-                            //width: fileManagerPageListView.columnWidths['fileSize'] + 20
-
+                            Layout.maximumWidth: 200
                             padding: 10
 
                             font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
@@ -225,8 +198,7 @@ Component {
                         }
 
                         Label {
-                            //width: fileManagerPageListView.columnWidths['fileUpdateTime'] + 20
-
+                            Layout.maximumWidth: 200
                             padding: 10
 
                             font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
