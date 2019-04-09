@@ -60,6 +60,7 @@ public slots:
     void fnUp();
     void fnUpdate();
     bool fnRemove(int iIndex);
+    bool fnRemoveFile(const QString &sFilePath);
     bool fnRemoveDir(const QString &sDirPath);
     void fnSetSortType(int iSortTypeIndex);
     QString fnFormatSize(qint64 iSize) const;

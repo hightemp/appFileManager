@@ -214,14 +214,30 @@ bool FilesListModel::fnRemove(int iIndex)
 
     QFileInfo oFileInfo = this->oFileInfoList.at(iIndex);
 
-    if (this->fnRemoveDir(oFileInfo.absoluteFilePath())) {
-        beginRemoveRows(QModelIndex(), iIndex, iIndex+1-1);
-        endRemoveRows();
+    if (oFileInfo.isDir()) {
+        if (this->fnRemoveDir(oFileInfo.absoluteFilePath())) {
+            beginRemoveRows(QModelIndex(), iIndex, iIndex);
+            endRemoveRows();
 
-        return true;
+            return true;
+        }
+    }
+
+    if (oFileInfo.isFile()) {
+        if (this->fnRemoveFile(oFileInfo.absoluteFilePath())) {
+            beginRemoveRows(QModelIndex(), iIndex, iIndex);
+            endRemoveRows();
+
+            return true;
+        }
     }
 
     return false;
+}
+
+bool FilesListModel::fnRemoveFile(const QString &sFilePath)
+{
+    return QFile::remove(sFilePath);
 }
 
 bool FilesListModel::fnRemoveDir(const QString &sDirPath)
