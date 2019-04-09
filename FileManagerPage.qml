@@ -35,6 +35,7 @@ Component {
                     onClicked: {
                         fileManagerPagePathLabel.visible = false;
                         fileManagerPagePathTextField.visible = true;
+                        fileManagerPagePathTextField.focus = true;
                     }
                 }
             }
@@ -52,8 +53,8 @@ Component {
 
                 }
 
-                Keys.onEnterPressed: fnOnPressEnter
-                Keys.onReturnPressed: fnOnPressEnter
+                Keys.onEnterPressed: { fnOnPressEnter() }
+                Keys.onReturnPressed: { fnOnPressEnter() }
 
                 function fnOnPressEnter()
                 {
