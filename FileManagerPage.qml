@@ -147,8 +147,10 @@ Component {
 
                     RowLayout {
                         id: row
-                        width: parent.width
+
                         spacing: 0
+                        Layout.alignment: Qt.AlignVCenter
+                        anchors.fill: parent
 
                         Image {
                             id: icon
@@ -161,11 +163,6 @@ Component {
                         }
 
                         Label {
-                            Layout.maximumWidth: 10
-                            Layout.minimumWidth: 10
-                        }
-
-                        Label {
                             id: fileManagerPageFileNameLabel
 
                             Layout.fillWidth: true
@@ -174,6 +171,8 @@ Component {
                             //padding: 10
 
                             anchors {
+                                left: icon.right
+                                leftMargin: 5
                             }
 
                             font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
@@ -195,6 +194,9 @@ Component {
                             font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
 
                             text: fileSize
+
+                            anchors {
+                            }
                         }
 
                         Label {
@@ -204,6 +206,9 @@ Component {
                             font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
 
                             text: fileUpdateTime
+
+                            anchors {
+                            }
                         }
                     }
 
