@@ -52,14 +52,12 @@ Component {
 
                 }
 
-                Keys.onEnterPressed: {
-                    fileManagerPagePathTextField.visible = false;
-                    oFilesListModel.fnSetPath(fileManagerPagePathTextField.text);
-                    oFilesListModel.fnUpdate();
-                    fileManagerPagePathLabel.visible = true;
-                    fileManagerPagePathLabel.text = oFilesListModel.fnGetCurrentPath();
-                }
-                Keys.onReturnPressed: {
+                Keys.onEnterPressed: fnOnPressEnter
+                Keys.onReturnPressed: fnOnPressEnter
+
+                function fnOnPressEnter()
+                {
+                    Qt.inputMethod.hide();
                     fileManagerPagePathTextField.visible = false;
                     oFilesListModel.fnSetPath(fileManagerPagePathTextField.text);
                     oFilesListModel.fnUpdate();
