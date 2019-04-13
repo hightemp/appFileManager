@@ -24,9 +24,13 @@ public:
         FileSizeRole,
         FileCreateTimeRole,
         FileUpdateTimeRole,
+        FileOwnerRole,
+        FileGroupRole,
+        FilePermissionsRole,
         IsDirRole,
         IsHiddenRole,
-        IsExecutableRole
+        IsExecutableRole,
+        IsSymLinkRole
     };
 
     enum FilesListModelSort {

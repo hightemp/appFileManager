@@ -44,6 +44,12 @@ int main(int argc, char *argv[])
 
     oFilesListFilterProxyModel.setSourceModel(&oFilesListModel);
 
+    QFont oFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    //QFont oFixedFont("Monospace");
+    //oFixedFont.setStyleHint(QFont::TypeWriter);
+    oFixedFont.setPixelSize(10);
+    oEngine.rootContext()->setContextProperty("oFixedFont", oFixedFont);
+
     oEngine.rootContext()->setContextProperty("oFilesListModel", &oFilesListModel);
     oEngine.rootContext()->setContextProperty("oFilesListFilterProxyModel", &oFilesListFilterProxyModel);
 

@@ -113,7 +113,8 @@ Component {
 
             ListView {
                 id: fileManagerPageListView
-                width: parent.width
+                //width: parent.width
+                Layout.maximumWidth: parent.width
                 orientation: ListView.Vertical
                 model: oFilesListFilterProxyModel
                 focus: true
@@ -121,7 +122,9 @@ Component {
                 FontMetrics {
                     id: fileManagerPageFontMetrics
 
-                    font.pixelSize: 10
+                    font: oFixedFont
+
+                    //font.pixelSize: 10
                 }
 
                 highlightFollowsCurrentItem: false
@@ -129,7 +132,7 @@ Component {
                     opacity: 0.5
                     color: "skyblue"
                     width: ListView.view ? ListView.view.width : 0
-                    height: ListView.view.currentItem.height //20+fileManagerPageFontMetrics.height
+                    height: ListView.view && ListView.view.currentItem ? ListView.view.currentItem.height : 0//20+fileManagerPageFontMetrics.height
                     y: ListView.view && ListView.view.currentItem ? ListView.view.currentItem.y : 0
                     //z: Infinity
                 }
@@ -141,7 +144,9 @@ Component {
                     property bool isCurrent: ListView.isCurrentItem
 
                     width: view.width
-                    height: 20+fileManagerPageFileNameLabel.height//+fileManagerPageFontMetrics.height
+                    height: 0
+                            +Math.max(fileManagerPageFileNameLabel.height, fileManagerPageFileOwnerLabel.height)
+                            //+fileManagerPageFontMetrics.height
 
                     opacity: isHidden ? 0.5 : 1;
 
@@ -156,7 +161,6 @@ Component {
                             id: icon
                             source: isDir ? "qrc:/images/folder.svg" : "qrc:/images/none.svg"
                             width: 20+fileManagerPageFontMetrics.height
-                            height: 20+fileManagerPageFontMetrics.height
 
                             anchors {
                             }
@@ -166,46 +170,112 @@ Component {
                             id: fileManagerPageFileNameLabel
 
                             Layout.fillWidth: true
-                            //Layout.maximumWidth: parent.width - 400
-
-                            //padding: 10
+                            Layout.minimumWidth: 50
 
                             anchors {
                                 left: icon.right
                                 leftMargin: 5
                             }
 
-                            font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            font: oFixedFont
 
                             renderType: Text.NativeRendering
-                            font.bold: isExecutable
-                            text: fileName
+                            //font.bold: isExecutable
+                            color: isSymLink ? "blue" : "black"
+                            text: (isExecutable ? "<b>" : "")+fileName+(isExecutable ? "</b>" : "")
                             wrapMode: "WrapAnywhere"
                         }
 
-                        Label {
-                            Layout.fillWidth: true
+                        TextMetrics {
+                            id: fileManagerPageFileOwnerTextMetrics
+                            font: oFixedFont
+                            elide: Text.ElideMiddle
+                            elideWidth: 100
+                            text: "wwwwwwwww"
                         }
 
                         Label {
-                            Layout.maximumWidth: 200
+                            id: fileManagerPageFileOwnerLabel
+                            Layout.minimumWidth: fileManagerPageFileOwnerTextMetrics.width+10
+                            Layout.maximumWidth: fileManagerPageFileOwnerTextMetrics.width+10
                             padding: 10
 
-                            font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            font: oFixedFont
 
-                            text: fileSize
+                            text: fileOwner+"<br>"+fileGroup
+                            horizontalAlignment: Text.AlignRight
+                            wrapMode: "WrapAnywhere"
 
                             anchors {
                             }
                         }
 
+                        TextMetrics {
+                            id: fileManagerPageFilePermissionsTextMetrics
+                            font: oFixedFont
+                            elide: Text.ElideMiddle
+                            elideWidth: 100
+                            text: "rwxrwxrwx"
+                        }
+
                         Label {
-                            Layout.maximumWidth: 200
+                            Layout.minimumWidth: fileManagerPageFilePermissionsTextMetrics.width+10
+                            Layout.maximumWidth: fileManagerPageFilePermissionsTextMetrics.width+10
                             padding: 10
 
-                            font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            font: oFixedFont
+
+                            text: filePermissions
+                            horizontalAlignment: Text.AlignRight
+
+                            anchors {
+                            }
+                        }
+
+                        TextMetrics {
+                            id: fileManagerPageFileSizeTextMetrics
+                            font: oFixedFont
+                            elide: Text.ElideMiddle
+                            elideWidth: 100
+                            text: "9999,99 TB"
+                        }
+
+                        Label {
+                            Layout.minimumWidth: fileManagerPageFileSizeTextMetrics.width+10
+                            Layout.maximumWidth: fileManagerPageFileSizeTextMetrics.width+10
+                            padding: 10
+
+                            //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            font: oFixedFont
+
+                            text: fileSize
+                            horizontalAlignment: Text.AlignRight
+
+                            anchors {
+                            }
+                        }
+
+                        TextMetrics {
+                            id: fileManagerPageFileUpdateTimeTextMetrics
+                            font: oFixedFont
+                            elide: Text.ElideMiddle
+                            elideWidth: 100
+                            text: "99.99.9999"
+                        }
+
+                        Label {
+                            Layout.minimumWidth: fileManagerPageFileUpdateTimeTextMetrics.width+10
+                            Layout.maximumWidth: fileManagerPageFileUpdateTimeTextMetrics.width+10
+                            padding: 10
+
+                            //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            font: oFixedFont
 
                             text: fileUpdateTime
+                            horizontalAlignment: Text.AlignRight
 
                             anchors {
                             }
@@ -219,11 +289,6 @@ Component {
 
                         onClicked: {
                             view.currentIndex = model.index;console.log(view.currentIndex, view)
-                            /*
-                            if (!model.isDir) {
-
-                            }
-                            */
                         }
 
                         onDoubleClicked: {
@@ -260,7 +325,8 @@ Component {
                 ComboBox {
                     id: fileManagerPageSortingTypeComboBox
 
-                    Layout.fillWidth: true
+                    //Layout.fillWidth: true
+                    Layout.minimumWidth: fileManagerPageBottomColumnLayout.width/2
 
                     model: [
                         "Name",
@@ -333,6 +399,112 @@ Component {
                         fileManagerPagePathTextField.text = oFilesListModel.fnGetCurrentPath();
                         oFilesListModel.fnUpdate();
                         fileManagerPageListView.fnUpdateColumnsWidth();
+                    }
+                }
+            }
+
+            RowLayout {
+                Layout.fillHeight: true
+
+                Button {
+                    //id: fileManagerPage
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/document-preview-archive"
+
+                        width: 32
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
+                    //id: fileManagerPage
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/view-preview"
+
+                        width: 32
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
+                    //id: fileManagerPage
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/editor"
+
+                        width: 32
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
+                    //id: fileManagerPage
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/folder-new"
+
+                        width: 32
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
+                    //id: fileManagerPage
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/archive-insert"
+
+                        width: 32
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
+                    //id: fileManagerPage
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/games-config-options"
+
+                        width: 32
+                    }
+
+                    onClicked: {
+
                     }
                 }
             }

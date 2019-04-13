@@ -9,5 +9,10 @@
         <file>images/folder-new.svg</file>
         <file>images/go-up.svg</file>
         <file>images/view-refresh.svg</file>
+        <file>images/archive-insert.svg</file>
+        <file>images/games-config-options.svg</file>
+        <file>images/view-preview.svg</file>
+        <file>images/editor.svg</file>
+        <file>images/document-preview-archive.svg</file>
     </qresource>
 </RCC>

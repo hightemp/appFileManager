@@ -22,9 +22,13 @@ QHash<int, QByteArray> FilesListModel::roleNames() const
         { FileSizeRole, "fileSize" },
         { FileCreateTimeRole, "fileCreateTime" },
         { FileUpdateTimeRole, "fileUpdateTime" },
+        { FileOwnerRole, "fileOwner" },
+        { FileGroupRole, "fileGroup" },
+        { FilePermissionsRole, "filePermissions" },
         { IsDirRole, "isDir" },
         { IsHiddenRole, "isHidden" },
-        { IsExecutableRole, "isExecutable" }
+        { IsExecutableRole, "isExecutable" },
+        { IsSymLinkRole, "isSymLink" }
     };
 }
 
@@ -47,11 +51,36 @@ QVariant FilesListModel::data(const QModelIndex &oIndex, int iRole) const
     }
 
     if (iRole == FileCreateTimeRole) {
-        return this->oFileInfoList[oIndex.row()].birthTime().toString("hh:mm:ss dd.MM.yyyy");
+        return this->oFileInfoList[oIndex.row()].birthTime().toString("hh:mm:ss<br>dd.MM.yyyy");
     }
 
     if (iRole == FileUpdateTimeRole) {
-        return this->oFileInfoList[oIndex.row()].lastModified().toString("hh:mm:ss dd.MM.yyyy");
+        return this->oFileInfoList[oIndex.row()].lastModified().toString("hh:mm:ss<br>dd.MM.yyyy");
+    }
+
+    if (iRole == FileOwnerRole) {
+        return this->oFileInfoList[oIndex.row()].owner();
+    }
+
+    if (iRole == FileGroupRole) {
+        return this->oFileInfoList[oIndex.row()].group();
+    }
+
+    if (iRole == FilePermissionsRole) {
+        QFile::Permissions oPermissions = this->oFileInfoList[oIndex.row()].permissions();
+        QString sResult = "";
+
+        sResult += oPermissions & QFileDevice::ReadUser ? "r" : "-";
+        sResult += oPermissions & QFileDevice::WriteUser ? "w" : "-";
+        sResult += oPermissions & QFileDevice::ExeUser ? "x" : "-";
+        sResult += oPermissions & QFileDevice::ReadGroup ? "r" : "-";
+        sResult += oPermissions & QFileDevice::WriteGroup ? "w" : "-";
+        sResult += oPermissions & QFileDevice::ExeGroup ? "x" : "-";
+        sResult += oPermissions & QFileDevice::ReadOther ? "r" : "-";
+        sResult += oPermissions & QFileDevice::WriteOther ? "w" : "-";
+        sResult += oPermissions & QFileDevice::ExeOther ? "x" : "-";
+
+        return sResult;
     }
 
     if (iRole == IsDirRole) {
@@ -64,6 +93,10 @@ QVariant FilesListModel::data(const QModelIndex &oIndex, int iRole) const
 
     if (iRole == IsExecutableRole) {
         return this->oFileInfoList[oIndex.row()].isExecutable();
+    }
+
+    if (iRole == IsSymLinkRole) {
+        return this->oFileInfoList[oIndex.row()].isSymLink();
     }
 
     return QVariant();
