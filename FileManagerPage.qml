@@ -150,6 +150,15 @@ Component {
 
                     opacity: isHidden ? 0.5 : 1;
 
+                    Rectangle {
+                        anchors.fill: parent
+
+                        color: "lightgray"
+                        opacity: 0.5
+
+                        visible: index % 2
+                    }
+
                     RowLayout {
                         id: row
 
