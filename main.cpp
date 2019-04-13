@@ -55,10 +55,13 @@ int main(int argc, char *argv[])
     oEngine.rootContext()->setContextProperty("oSettingsModel", &oSettingsModel);
 
     QFont oFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
-    //QFont oFixedFont("Monospace");
-    //oFixedFont.setStyleHint(QFont::TypeWriter);
     oFixedFont.setPixelSize(10);
     oEngine.rootContext()->setContextProperty("oFixedFont", oFixedFont);
+
+    QFont oMonospaceFont("Monospace");
+    oMonospaceFont.setStyleHint(QFont::TypeWriter);
+    oMonospaceFont.setPixelSize(10);
+    oEngine.rootContext()->setContextProperty("oMonospaceFont", oMonospaceFont);
 
     FilesListModel oFilesListModel;
     FilesListFilterProxyModel oFilesListFilterProxyModel;

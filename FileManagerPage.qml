@@ -166,16 +166,22 @@ Component {
                             }
                         }
 
+                        Item {
+                            width: 5
+                        }
+
                         Label {
                             id: fileManagerPageFileNameLabel
 
                             Layout.fillWidth: true
                             Layout.minimumWidth: 50
 
+                            /*
                             anchors {
                                 left: icon.right
                                 leftMargin: 5
                             }
+                            */
 
                             //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
                             font: oFixedFont
@@ -201,6 +207,8 @@ Component {
                             Layout.maximumWidth: fileManagerPageFileOwnerTextMetrics.width+10
                             padding: 10
 
+                            visible: oSettingsModel.fnGetBoolValue("bShowOwner")
+
                             //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
                             font: oFixedFont
 
@@ -214,7 +222,7 @@ Component {
 
                         TextMetrics {
                             id: fileManagerPageFilePermissionsTextMetrics
-                            font: oFixedFont
+                            font: oMonospaceFont
                             elide: Text.ElideMiddle
                             elideWidth: 100
                             text: "rwxrwxrwx"
@@ -225,8 +233,10 @@ Component {
                             Layout.maximumWidth: fileManagerPageFilePermissionsTextMetrics.width+10
                             padding: 10
 
+                            visible: oSettingsModel.fnGetBoolValue("bShowPermissions")
+
                             //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
-                            font: oFixedFont
+                            font: oMonospaceFont
 
                             text: filePermissions
                             horizontalAlignment: Text.AlignRight
@@ -247,6 +257,8 @@ Component {
                             Layout.minimumWidth: fileManagerPageFileSizeTextMetrics.width+10
                             Layout.maximumWidth: fileManagerPageFileSizeTextMetrics.width+10
                             padding: 10
+
+                            visible: oSettingsModel.fnGetBoolValue("bShowSize")
 
                             //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
                             font: oFixedFont
@@ -271,10 +283,29 @@ Component {
                             Layout.maximumWidth: fileManagerPageFileUpdateTimeTextMetrics.width+10
                             padding: 10
 
+                            visible: oSettingsModel.fnGetBoolValue("bShowModificationTime")
+
                             //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
                             font: oFixedFont
 
                             text: fileUpdateTime
+                            horizontalAlignment: Text.AlignRight
+
+                            anchors {
+                            }
+                        }
+
+                        Label {
+                            Layout.minimumWidth: fileManagerPageFileUpdateTimeTextMetrics.width+10
+                            Layout.maximumWidth: fileManagerPageFileUpdateTimeTextMetrics.width+10
+                            padding: 10
+
+                            visible: oSettingsModel.fnGetBoolValue("bShowCreationTime")
+
+                            //font.pixelSize: fileManagerPageFontMetrics.font.pixelSize
+                            font: oFixedFont
+
+                            text: fileCreateTime
                             horizontalAlignment: Text.AlignRight
 
                             anchors {
@@ -548,7 +579,7 @@ Component {
                     }
 
                     onClicked: {
-
+                        mainStackView.push(settingsPage);
                     }
                 }
             }

@@ -16,5 +16,6 @@
         <file>images/document-preview-archive.svg</file>
         <file>images/edit-copy.svg</file>
         <file>images/edit-paste.svg</file>
+        <file>SettingsPage.qml</file>
     </qresource>
 </RCC>

@@ -12,6 +12,12 @@ SettingsModel::~SettingsModel()
     delete this->poJsonObject;
 }
 
+void SettingsModel::fnSetDefaultStringValue(QVariant sName, QVariant oValue)
+{
+    qDebug() << __PRETTY_FUNCTION__ << sName << oValue;
+    this->fnUpdateStringValue(sName, this->fnGetStringValue(sName, oValue));
+}
+
 void SettingsModel::fnUpdateStringValue(QVariant sName, QVariant oValue, QVariant sDefaultValue)
 {
     qDebug() << __PRETTY_FUNCTION__ << sName << oValue;
@@ -22,8 +28,20 @@ void SettingsModel::fnUpdateStringValue(QVariant sName, QVariant oValue, QVarian
 QVariant SettingsModel::fnGetStringValue(QVariant sName, QVariant sDefaultValue)
 {
     qDebug() << __PRETTY_FUNCTION__ << sName;
-    QString sResult = (*this->poJsonObject)[sName.toString()].toString();
-    return sResult.isEmpty() ? sDefaultValue : sResult;
+
+    QJsonValue oJsonValue = (*this->poJsonObject)[sName.toString()];
+
+    if (oJsonValue.isUndefined() || oJsonValue.isNull()) {
+        return sDefaultValue;
+    }
+
+    return oJsonValue.toString();
+}
+
+void SettingsModel::fnSetDefaultIntValue(QVariant sName, QVariant oValue)
+{
+    qDebug() << __PRETTY_FUNCTION__ << sName << oValue;
+    this->fnUpdateIntValue(sName, this->fnGetIntValue(sName, oValue));
 }
 
 void SettingsModel::fnUpdateIntValue(QVariant sName, QVariant oValue, QVariant sDefaultValue)
@@ -44,10 +62,16 @@ QVariant SettingsModel::fnGetIntValue(QVariant sName, QVariant iDefaultValue)
     return oJsonValue.toInt();
 }
 
-void SettingsModel::fnUpdateBoolValue(QVariant sName, QVariant oValue)
+void SettingsModel::fnSetDefaultBoolValue(QVariant sName, QVariant oValue)
 {
     qDebug() << __PRETTY_FUNCTION__ << sName << oValue;
-    (*this->poJsonObject)[sName.toString()] = oValue.toBool();
+    this->fnUpdateBoolValue(sName, this->fnGetBoolValue(sName, oValue));
+}
+
+void SettingsModel::fnUpdateBoolValue(QVariant sName, QVariant oValue, QVariant bDefaultValue)
+{
+    qDebug() << __PRETTY_FUNCTION__ << sName << oValue;
+    (*this->poJsonObject)[sName.toString()] = oValue.isNull() && !bDefaultValue.isNull() ? bDefaultValue.toBool() : oValue.toBool();
 }
 
 QVariant SettingsModel::fnGetBoolValue(QVariant sName, QVariant bDefaultValue)

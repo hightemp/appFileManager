@@ -44,19 +44,27 @@ ApplicationWindow {
         console.log('fnStart');
 
         if (sOSType != "Mobile") {
-            applicationWindow.setWidth(oSettingsModel.fnGetIntValue("applicationWindow.width", 640));
-            applicationWindow.setHeight(oSettingsModel.fnGetIntValue("applicationWindow.height", 480));
+            oSettingsModel.fnSetDefaultIntValue("applicationWindow.width", 640);
+            oSettingsModel.fnSetDefaultIntValue("applicationWindow.height", 480);
+            oSettingsModel.fnSetDefaultIntValue("applicationWindow.x", Math.round(Screen.desktopAvailableWidth / 2 - applicationWindow.width / 2));
+            oSettingsModel.fnSetDefaultIntValue("applicationWindow.y", Math.round(Screen.desktopAvailableHeight / 2 - applicationWindow.height / 2));
 
-            applicationWindow.setX(oSettingsModel.fnGetIntValue("applicationWindow.x", Math.round(Screen.desktopAvailableWidth / 2 - applicationWindow.width / 2)));
-            applicationWindow.setY(oSettingsModel.fnGetIntValue("applicationWindow.y", Math.round(Screen.desktopAvailableHeight / 2 - applicationWindow.height / 2)));
+            applicationWindow.setWidth(oSettingsModel.fnGetIntValue("applicationWindow.width"));
+            applicationWindow.setHeight(oSettingsModel.fnGetIntValue("applicationWindow.height"));
 
-            oSettingsModel.fnUpdateIntValue("applicationWindow.width", applicationWindow.width);
-            oSettingsModel.fnUpdateIntValue("applicationWindow.height", applicationWindow.height);
-            oSettingsModel.fnUpdateIntValue("applicationWindow.x", applicationWindow.x);
-            oSettingsModel.fnUpdateIntValue("applicationWindow.y", applicationWindow.y);
+            applicationWindow.setX(oSettingsModel.fnGetIntValue("applicationWindow.x"));
+            applicationWindow.setY(oSettingsModel.fnGetIntValue("applicationWindow.y"));
 
             oSettingsModel.fnSave();
         }
+
+        oSettingsModel.fnSetDefaultBoolValue("bShowOwner", true);
+        oSettingsModel.fnSetDefaultBoolValue("bShowPermissions", true);
+        oSettingsModel.fnSetDefaultBoolValue("bShowSize", true);
+        oSettingsModel.fnSetDefaultBoolValue("bShowCreationTime", false);
+        oSettingsModel.fnSetDefaultBoolValue("bShowModificationTime", true);
+
+        oFilesListModel.fnUpdate();
     }
 
     StackView {
@@ -65,5 +73,6 @@ ApplicationWindow {
         anchors.fill: parent
 
         FileManagerPage { id: fileManagerPage }
+        SettingsPage { id: settingsPage }
     }
 }
