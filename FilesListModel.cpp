@@ -2,7 +2,7 @@
 
 FilesListModel::FilesListModel(QObject *poParent) : QAbstractListModel (poParent)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     this->oCurrentPath = QDir(QDir::root());
     this->fnUpdate();
@@ -15,7 +15,7 @@ FilesListModel::~FilesListModel()
 
 QHash<int, QByteArray> FilesListModel::roleNames() const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return {
         { FileNameRole, "fileName" },
@@ -34,7 +34,7 @@ QHash<int, QByteArray> FilesListModel::roleNames() const
 
 QVariant FilesListModel::data(const QModelIndex &oIndex, int iRole) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     if (!oIndex.isValid())
         return QVariant();
@@ -104,14 +104,14 @@ QVariant FilesListModel::data(const QModelIndex &oIndex, int iRole) const
 
 bool FilesListModel::setData(const QModelIndex &oIndex, const QVariant &oValue, int iRole)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return false;
 }
 
 QVariant FilesListModel::headerData(int iSection, Qt::Orientation oOrientation, int iRole) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     if (iRole != Qt::DisplayRole)
          return QVariant();
@@ -124,7 +124,7 @@ QVariant FilesListModel::headerData(int iSection, Qt::Orientation oOrientation, 
 
 Qt::ItemFlags FilesListModel::flags(const QModelIndex &oIndex) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     if (!oIndex.isValid())
         return Qt::ItemIsEnabled;
@@ -134,14 +134,14 @@ Qt::ItemFlags FilesListModel::flags(const QModelIndex &oIndex) const
 
 bool FilesListModel::insertRows(int iPosition, int iRows, const QModelIndex &oParent)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return false;
 }
 
 bool FilesListModel::removeRows(int iPosition, int iRows, const QModelIndex &oParent)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     if (iRows==0) {
         return true;
@@ -156,14 +156,14 @@ bool FilesListModel::removeRows(int iPosition, int iRows, const QModelIndex &oPa
 
 QModelIndex FilesListModel::index(int iRow, int iColumn, const QModelIndex &oParent) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return createIndex(iRow, iColumn);
 }
 
 QModelIndex FilesListModel::parent(const QModelIndex &oChild) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return QModelIndex();
 }
@@ -172,14 +172,14 @@ int FilesListModel::rowCount(const QModelIndex &oParent) const
 {
     int iRows = this->oFileInfoList.size();
 
-    qDebug() << __FUNCTION__ << iRows;
+    qDebug() << __PRETTY_FUNCTION__ << iRows;
 
     return iRows;
 }
 
 int FilesListModel::columnCount(const QModelIndex &oParent) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     Q_UNUSED(oParent);
 
@@ -188,14 +188,28 @@ int FilesListModel::columnCount(const QModelIndex &oParent) const
 
 bool FilesListModel::hasChildren(const QModelIndex &oParent) const
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return false;
 }
 
+void FilesListModel::fnShowHidden(bool bValue)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    this->bShowHidden = bValue;
+}
+
+void FilesListModel::fnShowSystem(bool bValue)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    this->bShowSystem = bValue;
+}
+
 void FilesListModel::fnOpenDir(int iIndex)
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     if (iIndex<0 || iIndex>=this->oFileInfoList.size()) {
         qDebug() << "iIndex " << iIndex << " out of bounds";
@@ -207,7 +221,7 @@ void FilesListModel::fnOpenDir(int iIndex)
 
 void FilesListModel::fnSetPath(QString sPath)
 {
-    qDebug() << __FUNCTION__ << sPath;
+    qDebug() << __PRETTY_FUNCTION__ << sPath;
 
     this->oCurrentPath.setPath(sPath);
     //this->oFileInfoList = this->oCurrentPath.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot, QDir::Type | QDir::Name);
@@ -215,21 +229,31 @@ void FilesListModel::fnSetPath(QString sPath)
 
 QString FilesListModel::fnGetCurrentPath()
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     return this->oCurrentPath.path();
 }
 
 void FilesListModel::fnUp()
 {
-    qDebug() << __FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__;
 
     this->oCurrentPath.cdUp();
 }
 
 void FilesListModel::fnUpdate()
 {
-    this->oFileInfoList = this->oCurrentPath.entryInfoList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot, QDir::SortFlags(FilesListModelSort(this->iSortType)));
+    QFlags<QDir::Filter> oFilterFlags = QDir::AllEntries | QDir::NoDotAndDotDot;
+
+    if (this->bShowHidden) {
+        oFilterFlags.setFlag(QDir::Hidden);
+    }
+
+    if (this->bShowSystem) {
+        oFilterFlags.setFlag(QDir::System);
+    }
+
+    this->oFileInfoList = this->oCurrentPath.entryInfoList(oFilterFlags, QDir::SortFlags(FilesListModelSort(this->iSortType)));
 
     beginResetModel();
     endResetModel();
@@ -237,7 +261,7 @@ void FilesListModel::fnUpdate()
 
 bool FilesListModel::fnRemove(int iIndex)
 {
-    qDebug() << __FUNCTION__ << iIndex;
+    qDebug() << __PRETTY_FUNCTION__ << iIndex;
 
     if (iIndex<0 || iIndex>=this->oFileInfoList.size()) {
         qDebug() << "iIndex " << iIndex << " out of bounds";
@@ -275,7 +299,7 @@ bool FilesListModel::fnRemoveFile(const QString &sFilePath)
 
 bool FilesListModel::fnRemoveDir(const QString &sDirPath)
 {
-    qDebug() << __FUNCTION__ << sDirPath;
+    qDebug() << __PRETTY_FUNCTION__ << sDirPath;
 
     QDir oDir(sDirPath);
 

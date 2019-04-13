@@ -4,7 +4,7 @@
 
 bool FilesListFilterProxyModel::filterAcceptsRow(int iSourceRow, const QModelIndex &oSourceParent) const
 {
-    qDebug() << __FUNCTION__ << this->filterRegExp();
+    qDebug() << __PRETTY_FUNCTION__ << this->filterRegExp();
 
     QModelIndex iIndex = this->sourceModel()->index(iSourceRow, 0, oSourceParent);
 

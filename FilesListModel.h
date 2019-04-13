@@ -17,6 +17,9 @@ public:
     QFileInfoList oFileInfoList;
     int iSortType = QDir::DirsFirst;
 
+    bool bShowHidden;
+    bool bShowSystem;
+
 public:
 
     enum FilesListModelRoles {
@@ -58,6 +61,8 @@ public:
     bool hasChildren(const QModelIndex &oParent) const override;
 
 public slots:
+    void fnShowHidden(bool bValue);
+    void fnShowSystem(bool bValue);
     void fnOpenDir(int iIndex);
     void fnSetPath(QString sPath);
     QString fnGetCurrentPath();

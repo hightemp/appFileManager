@@ -63,6 +63,11 @@ ApplicationWindow {
         oSettingsModel.fnSetDefaultBoolValue("bShowSize", true);
         oSettingsModel.fnSetDefaultBoolValue("bShowCreationTime", false);
         oSettingsModel.fnSetDefaultBoolValue("bShowModificationTime", true);
+        oSettingsModel.fnSetDefaultBoolValue("bShowHiddenFiles", false);
+        oSettingsModel.fnSetDefaultBoolValue("bShowSystemFiles", false);
+
+        oFilesListModel.fnShowHidden(oSettingsModel.fnGetBoolValue("bShowHiddenFiles"));
+        oFilesListModel.fnShowSystem(oSettingsModel.fnGetBoolValue("bShowSystemFiles"));
 
         oFilesListModel.fnUpdate();
     }

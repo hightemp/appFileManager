@@ -27,33 +27,45 @@ Component {
                 //anchors.margins: 10
 
                 CheckBox {
-                    id: settingsPageShowOwner
+                    id: settingsPageShowOwnerCheckBox
                     text: "Show owner"
                     checked: oSettingsModel.fnGetBoolValue("bShowOwner")
                 }
 
                 CheckBox {
-                    id: settingsPageShowPermissions
+                    id: settingsPageShowPermissionsCheckBox
                     text: "Show permissions"
                     checked: oSettingsModel.fnGetBoolValue("bShowPermissions")
                 }
 
                 CheckBox {
-                    id: settingsPageShowSize
+                    id: settingsPageShowSizeCheckBox
                     text: "Show size"
                     checked: oSettingsModel.fnGetBoolValue("bShowSize")
                 }
 
                 CheckBox {
-                    id: settingsPageShowCreationTime
+                    id: settingsPageShowCreationTimeCheckBox
                     text: "Show creation time"
                     checked: oSettingsModel.fnGetBoolValue("bShowCreationTime")
                 }
 
                 CheckBox {
-                    id: settingsPageShowModificationTime
+                    id: settingsPageShowModificationTimeCheckBox
                     text: "Show modification time"
                     checked: oSettingsModel.fnGetBoolValue("bShowModificationTime")
+                }
+
+                CheckBox {
+                    id: settingsPageShowHiddenFilesCheckBox
+                    text: "Show hidden files"
+                    checked: oSettingsModel.fnGetBoolValue("bShowHiddenFiles")
+                }
+
+                CheckBox {
+                    id: settingsPageShowSystemFilesCheckBox
+                    text: "Show system files"
+                    checked: oSettingsModel.fnGetBoolValue("bShowSystemFiles")
                 }
             }
         }
@@ -90,11 +102,16 @@ Component {
                     text: "Save"
 
                     onClicked: {
-                        oSettingsModel.fnUpdateBoolValue("bShowOwner", settingsPageShowOwner.checked);
-                        oSettingsModel.fnUpdateBoolValue("bShowPermissions", settingsPageShowPermissions.checked);
-                        oSettingsModel.fnUpdateBoolValue("bShowSize", settingsPageShowSize.checked);
-                        oSettingsModel.fnUpdateBoolValue("bShowCreationTime", settingsPageShowCreationTime.checked);
-                        oSettingsModel.fnUpdateBoolValue("bShowModificationTime", settingsPageShowModificationTime.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowOwner", settingsPageShowOwnerCheckBox.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowPermissions", settingsPageShowPermissionsCheckBox.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowSize", settingsPageShowSizeCheckBox.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowCreationTime", settingsPageShowCreationTimeCheckBox.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowModificationTime", settingsPageShowModificationTimeCheckBox.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowHiddenFiles", settingsPageShowHiddenFilesCheckBox.checked);
+                        oSettingsModel.fnUpdateBoolValue("bShowSystemFiles", settingsPageShowSystemFilesCheckBox.checked);
+
+                        oFilesListModel.fnShowHidden(settingsPageShowHiddenFilesCheckBox.checked);
+                        oFilesListModel.fnShowSystem(settingsPageShowSystemFilesCheckBox.checked);
 
                         oSettingsModel.fnSave();
                         oFilesListModel.fnUpdate();
