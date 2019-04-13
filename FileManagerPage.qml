@@ -313,6 +313,8 @@ Component {
         ColumnLayout {
             id: fileManagerPageBottomColumnLayout
 
+            property int iIconSize: 24
+
             anchors {
                 right: parent.right
                 bottom: parent.bottom
@@ -325,8 +327,8 @@ Component {
                 ComboBox {
                     id: fileManagerPageSortingTypeComboBox
 
-                    //Layout.fillWidth: true
-                    Layout.minimumWidth: fileManagerPageBottomColumnLayout.width/2
+                    Layout.fillWidth: true
+                    //Layout.minimumWidth: fileManagerPageBottomColumnLayout.width/2
 
                     model: [
                         "Name",
@@ -344,6 +346,42 @@ Component {
                 }
 
                 Button {
+                    //id: fileManagerPageDeleteButton
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/edit-copy"
+
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
+                    //id: fileManagerPageDeleteButton
+
+                    Layout.fillWidth: true
+
+                    Image {
+                        anchors.centerIn: parent
+                        source: "qrc:/images/edit-paste"
+
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
+                    }
+
+                    onClicked: {
+
+                    }
+                }
+
+                Button {
                     id: fileManagerPageDeleteButton
 
                     Layout.fillWidth: true
@@ -352,8 +390,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/edit-delete"
 
-                        width: 32
-                        height: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -370,8 +408,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/view-refresh"
 
-                        width: 32
-                        height: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -389,8 +427,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/go-up.svg"
 
-                        width: 32
-                        height: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -415,7 +453,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/document-preview-archive"
 
-                        width: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -432,7 +471,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/view-preview"
 
-                        width: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -449,7 +489,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/editor"
 
-                        width: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -466,7 +507,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/folder-new"
 
-                        width: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -483,7 +525,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/archive-insert"
 
-                        width: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {
@@ -500,7 +543,8 @@ Component {
                         anchors.centerIn: parent
                         source: "qrc:/images/games-config-options"
 
-                        width: 32
+                        width: fileManagerPageBottomColumnLayout.iIconSize
+                        height: fileManagerPageBottomColumnLayout.iIconSize
                     }
 
                     onClicked: {

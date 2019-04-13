@@ -24,6 +24,7 @@ QT_END_NAMESPACE
 
 #include "FilesListModel.h"
 #include "FilesListFilterProxyModel.h"
+#include "SettingsModel.h"
 
 int main(int argc, char *argv[])
 {
@@ -33,16 +34,25 @@ int main(int argc, char *argv[])
 
     oApplication.setWindowIcon(QIcon(":/images/folder.svg"));
 
+    QString sConfigFileName = ".appFileManager.cfg";
+    QString sConfigFilePath = QDir::homePath() + "/" + sConfigFileName;
+
+    SettingsModel oSettingsModel;
+    oSettingsModel.fnSetFilePath(sConfigFilePath);
+
+    if (!oSettingsModel.fnFileExists()) {
+        oSettingsModel.fnSave();
+    }
+
+    oSettingsModel.fnLoad();
+
     QQmlApplicationEngine oEngine;
     oEngine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     if (oEngine.rootObjects().isEmpty())
         return -1;
 
-    FilesListModel oFilesListModel;
-    FilesListFilterProxyModel oFilesListFilterProxyModel;
-
-    oFilesListFilterProxyModel.setSourceModel(&oFilesListModel);
+    oEngine.rootContext()->setContextProperty("oSettingsModel", &oSettingsModel);
 
     QFont oFixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
     //QFont oFixedFont("Monospace");
@@ -50,8 +60,25 @@ int main(int argc, char *argv[])
     oFixedFont.setPixelSize(10);
     oEngine.rootContext()->setContextProperty("oFixedFont", oFixedFont);
 
+    FilesListModel oFilesListModel;
+    FilesListFilterProxyModel oFilesListFilterProxyModel;
+
+    oFilesListFilterProxyModel.setSourceModel(&oFilesListModel);
+
     oEngine.rootContext()->setContextProperty("oFilesListModel", &oFilesListModel);
     oEngine.rootContext()->setContextProperty("oFilesListFilterProxyModel", &oFilesListFilterProxyModel);
+
+    #ifdef Q_OS_ANDROID
+        oEngine.rootContext()->setContextProperty("sOSType", "Mobile");
+    #else
+        #ifdef Q_OS_IOS
+            oEngine.rootContext()->setContextProperty("sOSType", "Mobile");
+        #else
+            oEngine.rootContext()->setContextProperty("sOSType", "Desktop");
+        #endif
+    #endif
+
+    QMetaObject::invokeMethod(oEngine.rootObjects()[0], "fnStart");
 
     return oApplication.exec();
 }

@@ -14,5 +14,7 @@
         <file>images/view-preview.svg</file>
         <file>images/editor.svg</file>
         <file>images/document-preview-archive.svg</file>
+        <file>images/edit-copy.svg</file>
+        <file>images/edit-paste.svg</file>
     </qresource>
 </RCC>

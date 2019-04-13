@@ -19,7 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     FilesListModel.cpp \
-    FilesListFilterProxyModel.cpp
+    FilesListFilterProxyModel.cpp \
+    SettingsModel.cpp
 
 RESOURCES += qml.qrc
 
@@ -36,7 +37,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     FilesListModel.h \
-    FilesListFilterProxyModel.h
+    FilesListFilterProxyModel.h \
+    SettingsModel.h
 
 DISTFILES += \
     README.md \
